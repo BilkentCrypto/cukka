@@ -1,4 +1,4 @@
-import ConnectButton from "../../components/ui/ConnectButton";
+import ConnectButton from "../../../components/ui/ConnectButton";
 
 export default function TestPage() {
     return(
