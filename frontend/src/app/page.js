@@ -1,5 +1,7 @@
 import Image from "next/image";
-import ConnectButton from "../components/ui/ConnectButton";
+import ConnectButton from "@/components/ui/ConnectButton";
+import { Button } from "@/components/ui/button";
+
 
 export default function Home() {
   return (
