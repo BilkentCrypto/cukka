@@ -2,29 +2,23 @@ import ConnectButton from '@/components/ui/ConnectButton';
 import Link from 'next/link'
 import { Button } from '@/components/ui/button';
 
-
 export default async function NavigationBar() {
 
   return (
     <header className="bg-background border-b shadow-sm sticky top-0 z-10">
     <div className="container flex items-center justify-between h-16 px-4 md:px-6">
-      <Link href="#" className="flex items-center gap-2" prefetch={false}>
+      <Link href="/" className="flex items-center gap-2" >
         <CurrencyIcon className="w-6 h-6" />
-        <span className="text-lg font-semibold">Transfer</span>
+        <span className="text-lg font-semibold">Cukka</span>
       </Link>
       <nav className="hidden md:flex items-center gap-4">
-        <Link href="#" className="text-sm font-medium hover:text-primary transition-colors" prefetch={false}>
-          Features
+        <Link href="/transfer" className="text-sm font-medium hover:text-primary transition-colors">
+          Transfer
         </Link>
-        <Link href="#" className="text-sm font-medium hover:text-primary transition-colors" prefetch={false}>
-          Pricing
+        <Link href="/my-accounts" className="text-sm font-medium hover:text-primary transition-colors" >
+          My Accounts
         </Link>
-        <div className="flex items-center gap-2">
-          <Link href="#" className="text-sm font-medium hover:text-primary transition-colors" prefetch={false}>
-            Login
-          </Link>
-          <Button size="sm">Sign Up</Button>
-        </div>
+<ConnectButton/>
       </nav>
       <Button variant="ghost" size="icon" className="md:hidden">
         <MenuIcon className="w-6 h-6" />
