@@ -21,7 +21,10 @@ export default function MyAccounts() {
   }
 
   useEffect(() => {
- getGithubUser();
+    if(githubCookie) {
+      getGithubUser();
+    }
+
   }, []);
 
   return (
