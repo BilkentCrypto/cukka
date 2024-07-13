@@ -1,5 +1,4 @@
-'use server'
-
+require('dotenv').config()
 const fs = require("fs");
 const path = require("path");
 const {
@@ -25,11 +24,10 @@ const routerAddress = "0x234a5fb5Bd614a7AA2FfAB244D603abFA0Ac5C5C"
 const expirationTimeMinutes = 360;
 
 const provider = new ethers.providers.JsonRpcProvider("https://sepolia-rollup.arbitrum.io/rpc");
-const wallet = new ethers.Wallet(process.env.CHAINLINK_ACCESS_TOKEN);
+const wallet = new ethers.Wallet(process.env.CHAINLINK_PRIVATE_KEY);
 const signer = wallet.connect(provider);
 
-
-export async function storeEncryptedSecretDON(accessToken) {
+ async function storeEncryptedSecretDON(accessToken) {
     const secretsManager = new SecretsManager({
         signer: signer,
         functionsRouterAddress: routerAddress,
@@ -54,4 +52,8 @@ export async function storeEncryptedSecretDON(accessToken) {
         `\n✅ Secrets uploaded properly to gateways ${gatewayUrls}! Gateways response: `,
         uploadResult
     );
+
+    return uploadResult;
 }
+
+module.exports={storeEncryptedSecretDON}

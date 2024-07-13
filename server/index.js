@@ -1,21 +1,32 @@
 // Import the required modules
 const express = require('express');
 const cors = require('cors');
+const { storeEncryptedSecretDON } = require('./utils/chainlink');
+require('dotenv').config()
 
-// Create an instance of an Express application
-const app = express();
+const bodyParser = require('body-parser')
+const app = express()
 
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
 // Use the cors middleware
 app.use(cors());
 
 // Define a simple route
-app.get('/', (req, res) => {
-    res.send('Hello World! CORS is enabled for all routes.');
-});
+app.post('/store/github', async (req, res) => {
+    console.log(req)
+    const token = req.body.token;
+    try {
+        const result = await storeEncryptedSecretDON(token);
 
-// Define another route for demonstration
-app.get('/api/data', (req, res) => {
-    res.json({ message: 'This is some data from the server.', data: [1, 2, 3, 4, 5] });
+        return res.status(200).json({message: "Success!", version: result.version, success: result.success});
+    } catch(e) {
+        return res.status(500).json({message: e.message});
+    }
+
 });
 
 // Start the server

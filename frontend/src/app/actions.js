@@ -1,6 +1,7 @@
 'use server';
 import { cookies } from 'next/headers'
 
+
 export const getGithubAccessToken = async (code) => {
     const params = "?client_id=" + process.env.NEXT_PUBLIC_CLIENT_ID + "&client_secret=" + process.env.NEXT_PUBLIC_CLIENT_SECRET + "&code=" + code;
     console.log(params);
@@ -22,6 +23,7 @@ export const getGithubAccessToken = async (code) => {
 
   }
 
+
   export const getGithubUserData = async () => {
    const token =  cookies().get('GH_token')
 console.log("github token: ", token)
@@ -41,3 +43,4 @@ console.log("github token: ", token)
     }
 
   }
+
