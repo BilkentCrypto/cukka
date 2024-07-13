@@ -138,7 +138,7 @@ contract GitHubFunding is FunctionsClient {
 
         if (usdcAmount > 0) {
             usdcBalances[username] = 0;
-            IERC20(usdcAddress).transfer(msg.sender, usdcAmount);
+            IERC20(usdcAddress).transfer(_requestIdentity.payee, usdcAmount);
 
             emit FundsClaimed(username, usdcAmount);
         }
