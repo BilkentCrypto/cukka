@@ -3,7 +3,7 @@ import AboutCard from './AboutCard';
 
 const Sponsorships = () => {
   return (
-    <div className="w-full bg-white py-12 flex flex-col items-center">
+    <div className="w-full flex flex-col items-center">
       <h1 className="text-4xl mb-8 font-bold text-black">
         Partnerships
       </h1>

@@ -3,14 +3,14 @@ import Link from 'next/link';
 
 export function Welcome() {
   return (
-    <section className="w-full py-20 md:py-32 bg-background">
+    <section className="w-full py-20 md:py-32">
       <div className="container px-4 md:px-6">
         <div className="grid gap-8 md:grid-cols-1 md:gap-12 items-center">
           <div className="space-y-4 animate-fade-in">
             <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl animate-fade-in-up">
               Welcome to Cukka
             </h1>
-            <p className="text-muted-foreground md:text-xl animate-fade-in-up delay-100">
+            <p className="text-gray-900 text-muted-foreground md:text-xl animate-fade-in-up delay-100">
               Cukka is a revolutionary platform that empowers businesses to thrive in the digital age. Discover how we
               can help you transform your operations and unlock new opportunities.
             </p>

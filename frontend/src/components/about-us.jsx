@@ -3,12 +3,12 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 export function AboutUs() {
   return (
     <div className="w-full">
-      <section id="about-us" className="w-full py-8 md:py-16 lg:py-20 bg-white">
+      <section id="about-us" className="w-full py-8 md:py-16 lg:py-20">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2 max-w-[600px]">
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">About Us</h2>
-              <p className="text-muted-foreground md:text-lg/relaxed lg:text-base/relaxed xl:text-lg/relaxed">
+              <p className=" text-gray-900 text-muted-foreground md:text-lg/relaxed lg:text-base/relaxed xl:text-lg/relaxed">
                 At Acme Inc., we are a team of passionate individuals dedicated to creating innovative solutions that
                 empower our clients to achieve their goals.
               </p>
@@ -16,12 +16,12 @@ export function AboutUs() {
           </div>
         </div>
       </section>
-      <section className="w-full py-8 md:py-16 lg:py-20 bg-white">
+      <section className="w-full py-8 md:py-16 lg:py-20 ">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Our Team</h2>
-              <p className="max-w-[700px] text-muted-foreground md:text-lg/relaxed lg:text-base/relaxed xl:text-lg/relaxed">
+              <p className="text-gray-900 max-w-[700px] text-muted-foreground md:text-lg/relaxed lg:text-base/relaxed xl:text-lg/relaxed">
                 Meet the talented individuals who make up the Acme Inc. team.
               </p>
             </div>

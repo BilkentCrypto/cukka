@@ -26,8 +26,8 @@ export default function RootLayout({
   const initialState = cookieToInitialState(config, headers().get('cookie'))
   return (
     <html lang="en">
-      <body className={cn(
-          "min-h-screen bg-background font-sans antialiased",
+      <body style = {{ backgroundImage: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)' }} className={cn(
+          "min-h-screen bg-background:200 font-sans antialiased",
           fontSans.variable
         )}>
         <Web3ModalProvider initialState={initialState}>{children}</Web3ModalProvider>
