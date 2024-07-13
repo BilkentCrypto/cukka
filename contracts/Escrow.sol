@@ -8,17 +8,14 @@ import "@openzeppelin/contracts@4.9.3/token/ERC20/IERC20.sol";
 contract GitHubFunding is FunctionsClient {
     using FunctionsRequest for FunctionsRequest.Request;
 
-
-    // usdc: 0xF50876b0c719c828aEfb87ECAECE1DadaaE7A3D4
+    // USDC (Arbitrum Sepolia): 0xF50876b0c719c828aEfb87ECAECE1DadaaE7A3D4
 
     address public owner;
     address public usdcAddress;
     uint64 public subscriptionId;
 
-    //fees
     uint256 public totalEthFees;
     uint256 public totalUsdcFees;
-
 
     address router = 0x234a5fb5Bd614a7AA2FfAB244D603abFA0Ac5C5C;
     uint32 gasLimit = 300000;
@@ -44,13 +41,15 @@ contract GitHubFunding is FunctionsClient {
     }
 
     string public source =
-        "const accessToken = args[0];"
-        "const username = args[1];"
+        "const username = args[0];"
+        "if (!secrets.accessToken) {"
+        "  throw Error('Missing access token');"
+        "};"
         "const url = 'https://api.github.com/user';"
         "const githubRequest = Functions.makeHttpRequest({"
         "  url: url,"
         "  method: 'GET',"
-        "  headers: {'Authorization':  'Bearer ' + accessToken}"
+        "  headers: {'Authorization': 'Bearer ' + secrets.accessToken}"
         "});"
         "const githubResponse = await githubRequest;"
         "if (githubResponse.error) {"
@@ -85,10 +84,7 @@ contract GitHubFunding is FunctionsClient {
     ) external payable {
         bytes32 userKey = keccak256(abi.encodePacked(platform, username));
         if (isETH) {
-            require(
-                msg.value > 0,
-                "ETH amount mismatch"
-            );
+            require(msg.value > 0, "ETH amount mismatch");
             ethBalances[userKey] += msg.value;
         } else {
             require(amount > 0, "USDC amount must be > 0");
@@ -104,7 +100,7 @@ contract GitHubFunding is FunctionsClient {
 
     function sendClaimRequest(
         string calldata username,
-        string calldata accessToken,
+        uint64 donHostedSecretsVersion,
         Platform platform
     ) external {
         bytes32 userKey = keccak256(abi.encodePacked(platform, username));
@@ -114,8 +110,8 @@ contract GitHubFunding is FunctionsClient {
 
         bytes32 requestId = initializeFunctionsRequest(
             username,
-            accessToken,
             platform,
+            donHostedSecretsVersion,
             msg.sender
         );
         emit ClaimRequestSent(
@@ -126,18 +122,22 @@ contract GitHubFunding is FunctionsClient {
 
     function initializeFunctionsRequest(
         string memory username,
-        string memory accessToken,
         Platform platform,
+        uint64 donHostedSecretsVersion,
         address caller
     ) internal returns (bytes32) {
         FunctionsRequest.Request memory req;
-        string[] memory args = new string[](2);
-        args[0] = accessToken;
-        args[1] = username;
+        string[] memory args = new string[](1);
+        args[0] = username;
 
         if (args.length > 0) req.setArgs(args);
 
         req.initializeRequestForInlineJavaScript(source); // Assuming a valid source for external API
+        req.addDONHostedSecrets(
+                0,
+                donHostedSecretsVersion
+        );
+
         bytes32 requestId = _sendRequest(
             req.encodeCBOR(),
             subscriptionId,
@@ -150,6 +150,22 @@ contract GitHubFunding is FunctionsClient {
             platform
         );
         return requestId;
+    }
+
+    // withdraw fees
+    function withdrawEthFees() external onlyOwner {
+        uint256 amount = totalEthFees;
+        require(amount > 0, "No ETH fees to withdraw");
+        totalEthFees = 0;
+        (bool sent, ) = payable(owner).call{value: amount}("");
+        require(sent, "Failed to send ETH fees");
+    }
+
+    function withdrawUsdcFees() external onlyOwner {
+        uint256 amount = totalUsdcFees;
+        require(amount > 0, "No USDC fees to withdraw");
+        totalUsdcFees = 0;
+        require(IERC20(usdcAddress).transfer(owner, amount), "Failed to send USDC fees");
     }
 
     function fulfillRequest(
@@ -194,24 +210,12 @@ contract GitHubFunding is FunctionsClient {
         );
     }
 
-    // withdraw fees
-    function withdrawEthFees() external onlyOwner {
-        uint256 amount = totalEthFees;
-        require(amount > 0, "No ETH fees to withdraw");
-        totalEthFees = 0;
-        (bool sent, ) = payable(owner).call{value: amount}("");
-        require(sent, "Failed to send ETH fees");
-    }
-
-    function withdrawUsdcFees() external onlyOwner {
-        uint256 amount = totalUsdcFees;
-        require(amount > 0, "No USDC fees to withdraw");
-        totalUsdcFees = 0;
-        require(IERC20(usdcAddress).transfer(owner, amount), "Failed to send USDC fees");
-    }
-
     // Function to get the userKey for a given username and platform
-    function getUserKey(string calldata username, Platform platform) external pure returns (bytes32) {
+    function getUserKey(string calldata username, Platform platform)
+        external
+        pure
+        returns (bytes32)
+    {
         return keccak256(abi.encodePacked(platform, username));
     }
 
