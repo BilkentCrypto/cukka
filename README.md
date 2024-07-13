@@ -1,4 +1,4 @@
-# Cukka, a DeSoc platform built in @ETHGlobal Brusssels
+# Cukka, a social payment platform built in @ETHGlobal Brusssels 2024
 
 Cukka is a unique way of sending money to social media accounts (X and Github) without having to ask the users for their crypto addresses. Built on Arbitrum and Chainlink by Bilkent Blockchain for ETHGlobal Brussels 2024.
 
