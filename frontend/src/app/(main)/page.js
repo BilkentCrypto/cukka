@@ -7,8 +7,9 @@ import { useEffect } from "react";
 import { getUserData } from "../actions";
 import Link from 'next/link';
 import { TransferComponent } from "@/components/transfer-component";
-import About from "@/components/about";
+import Sponsorships from "@/components/Sponsorships";
 import { Welcome } from "@/components/Welcome"
+import { AboutUs } from "@/components/about-us";
 
 export default function Home() {
   return (
@@ -22,7 +23,10 @@ export default function Home() {
         </div>
       </div>
       <div className="w-full mt-12">
-        <About />
+        <Sponsorships />
+      </div>
+      <div>
+        <AboutUs />
       </div>
     </main>
   );

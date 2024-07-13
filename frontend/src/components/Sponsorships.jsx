@@ -1,7 +1,7 @@
 import React from 'react';
-import AboutCard from '../components/AboutCard';
+import AboutCard from './AboutCard';
 
-const About = () => {
+const Sponsorships = () => {
   return (
     <div className="w-full bg-white py-12 flex flex-col items-center">
       <h1 className="text-4xl mb-8 font-bold text-black">
@@ -28,4 +28,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default Sponsorships;
