@@ -1,14 +1,16 @@
 import ConnectButton from '@/components/ui/ConnectButton';
 import Link from 'next/link'
 import { Button } from '@/components/ui/button';
+import Image from 'next/image'
+
 
 export default async function NavigationBar() {
 
   return (
     <header className="bg-background border-b shadow-sm sticky top-0 z-10">
     <div className="container flex items-center justify-between h-16 px-4 md:px-6">
-      <Link href="/" className="flex items-center gap-2" >
-        <CurrencyIcon className="w-6 h-6" />
+      <Link href="/" className="flex items-center gap-1" >
+        <Image src="/logo.png" width={500} height={500} alt="Cukka" className="w-10 h-10" />
         <span className="text-lg font-semibold">Cukka</span>
       </Link>
       <nav className="hidden md:flex items-center gap-4">
