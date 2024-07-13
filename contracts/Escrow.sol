@@ -78,7 +78,7 @@ contract GitHubFunding is FunctionsClient {
         bytes32 userKey = keccak256(abi.encodePacked(platform, username));
         if (isETH) {
             require(
-                msg.value > 0 && msg.value == amount,
+                msg.value > 0,
                 "ETH amount mismatch"
             );
             ethBalances[userKey] += msg.value;
