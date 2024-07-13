@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 import { useState } from 'react';
 import {
@@ -21,12 +23,11 @@ export function TransferComponent() {
   const [assetType, setAssetType] = useState('');
 
   const handleSend = () => {
-    // Logic to handle sending money
     console.log(`Sending ${amount} to ${username} on ${platform} using ${assetType}`);
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-background">
+    <div className="flex flex-col items-center justify-center h-full bg-background">
       <Card className="w-full max-w-md p-6">
         <CardHeader>
           <CardTitle>Send Money</CardTitle>
