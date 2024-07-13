@@ -8,9 +8,17 @@ import "@openzeppelin/contracts@4.9.3/token/ERC20/IERC20.sol";
 contract GitHubFunding is FunctionsClient {
     using FunctionsRequest for FunctionsRequest.Request;
 
+
+    // usdc: 0xF50876b0c719c828aEfb87ECAECE1DadaaE7A3D4
+
     address public owner;
     address public usdcAddress;
     uint64 public subscriptionId;
+
+    //fees
+    uint256 public totalEthFees;
+    uint256 public totalUsdcFees;
+
 
     address router = 0x234a5fb5Bd614a7AA2FfAB244D603abFA0Ac5C5C;
     uint32 gasLimit = 300000;
@@ -161,17 +169,21 @@ contract GitHubFunding is FunctionsClient {
         uint256 usdcAmount = usdcBalances[userKey];
 
         if (ethAmount > 0) {
+            uint256 ethFee = ethAmount / 100; // 1% fee
+            uint256 ethToTransfer = ethAmount - ethFee;
+            totalEthFees += ethFee;
             ethBalances[userKey] = 0;
-            (bool ethSent, ) = payable(identity.payee).call{value: ethAmount}(
-                ""
-            );
+            (bool ethSent, ) = payable(identity.payee).call{value: ethToTransfer}("");
             require(ethSent, "ETH Transfer failed");
         }
 
         if (usdcAmount > 0) {
+            uint256 usdcFee = usdcAmount / 100; // 1% fee
+            uint256 usdcToTransfer = usdcAmount - usdcFee;
+            totalUsdcFees += usdcFee;
             usdcBalances[userKey] = 0;
             require(
-                IERC20(usdcAddress).transfer(identity.payee, usdcAmount),
+                IERC20(usdcAddress).transfer(identity.payee, usdcToTransfer),
                 "USDC Transfer failed"
             );
         }
@@ -180,6 +192,22 @@ contract GitHubFunding is FunctionsClient {
             encodePlatformUser(identity.username, identity.platform),
             ethAmount + usdcAmount
         );
+    }
+
+    // withdraw fees
+    function withdrawEthFees() external onlyOwner {
+        uint256 amount = totalEthFees;
+        require(amount > 0, "No ETH fees to withdraw");
+        totalEthFees = 0;
+        (bool sent, ) = payable(owner).call{value: amount}("");
+        require(sent, "Failed to send ETH fees");
+    }
+
+    function withdrawUsdcFees() external onlyOwner {
+        uint256 amount = totalUsdcFees;
+        require(amount > 0, "No USDC fees to withdraw");
+        totalUsdcFees = 0;
+        require(IERC20(usdcAddress).transfer(owner, amount), "Failed to send USDC fees");
     }
 
     // Function to get the userKey for a given username and platform
