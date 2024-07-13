@@ -6,7 +6,7 @@ export function Welcome() {
     <section className="flex flex-col items-center justify-center h-full">
       <div className="text-center">
         <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
-          Welcome to Cukka
+          Cukka
         </h1>
         <p className="text-muted-foreground md:text-xl mt-4">
           Cukka is a revolutionary platform that empowers businesses to thrive in the digital age. Discover how we
