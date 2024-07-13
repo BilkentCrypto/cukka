@@ -75,7 +75,7 @@ contract GitHubFunding is FunctionsClient {
     {
         uint256 amountETH = ethBalances[username];
         uint256 amountUSDC = usdcBalances[username];
-        require((amountETH > 0) && (amountUSDC > 0), "No balance to claim");
+        require((amountETH > 0) || (amountUSDC > 0), "No balance to claim");
 
         bytes32 _requestID = initializeFunctionsRequest(
             test,
@@ -136,14 +136,21 @@ contract GitHubFunding is FunctionsClient {
         uint256 ethAmount = ethBalances[username];
         uint256 usdcAmount = usdcBalances[username];
 
-        ethBalances[username] = 0;
-        (bool sent, ) = payable(_requestIdentity.payee).call{value: msg.value}("");
-        require(sent, "Not sent");
-        
-        emit FundsClaimed(username, ethAmount);
+        if (usdcAmount > 0) {
+            usdcBalances[username] = 0;
+            IERC20(usdcAddress).transfer(msg.sender, usdcAmount);
 
-        IERC20(usdcAddress).transfer(msg.sender, usdcAmount);
-        usdcBalances[username] = 0;
-        emit FundsClaimed(username, usdcAmount);
+            emit FundsClaimed(username, usdcAmount);
+        }
+
+        if (ethAmount > 0) {
+            ethBalances[username] = 0;
+            (bool sent, ) = payable(_requestIdentity.payee).call{
+                value: ethAmount
+            }("");
+            require(sent, "Not sent");
+
+            emit FundsClaimed(username, ethAmount);
+        }
     }
 }
