@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Card,
   CardHeader,
@@ -20,28 +20,29 @@ import InstagramIcon from '@/components/icons/InstagramIcon';
 import FacebookIcon from '@/components/icons/FacebookIcon';
 import TiktokIcon from '@/components/icons/TiktokIcon';
 import YoutubeIcon from '@/components/icons/YoutubeIcon';
-//import { storeEncryptedSecretDON } from '@/utils/chainlink';
-import { getEthersSigner } from '@/utils/ethersUtil'
-import { config } from '@/config'
 
-
-export function TransferComponent() {
+export function TransferComponent({ initialValues, onSubmit }) {
   const [platform, setPlatform] = useState('');
   const [username, setUsername] = useState('');
   const [amount, setAmount] = useState('');
   const [assetType, setAssetType] = useState('');
 
-  const handleSend = async () => {
-    // Logic to handle sending money
-    console.log(`Sending ${amount} to ${username} on ${platform} using ${assetType}`);
-    const signer = getEthersSigner(config)
-    //await storeEncryptedSecretDON(signer);
-    
+  useEffect(() => {
+    if (initialValues) {
+      setPlatform(initialValues.platform || '');
+      setUsername(initialValues.username || '');
+      setAmount(initialValues.amount || '');
+      setAssetType(initialValues.assetType || '');
+    }
+  }, [initialValues]);
+
+  const handleSubmit = () => {
+    onSubmit({ platform, username, amount, assetType });
   };
 
   return (
     <div className="flex flex-col items-center justify-center h-full">
-      <Card className="w-full max-w-md p-6 rounded-2xl">
+      <Card className="w-full max-w-md p-6 rounded-lg">
         <CardHeader>
           <CardTitle>Send Money</CardTitle>
           <CardDescription>Enter the details to send money to a social media account.</CardDescription>
@@ -117,14 +118,16 @@ export function TransferComponent() {
                 <SelectValue placeholder="Select asset type" />
               </SelectTrigger>
               <SelectContent>
+                <SelectItem value="bitcoin">Bitcoin</SelectItem>
                 <SelectItem value="ethereum">Ethereum</SelectItem>
                 <SelectItem value="usdc">USDC</SelectItem>
+                <SelectItem value="dai">DAI</SelectItem>
               </SelectContent>
             </Select>
           </div>
         </CardContent>
         <CardFooter>
-          <Button className="w-full" onClick={handleSend}>Send</Button>
+          <Button className="w-full" onClick={handleSubmit}>Send</Button>
         </CardFooter>
       </Card>
     </div>
