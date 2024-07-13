@@ -20,6 +20,10 @@ import InstagramIcon from '@/components/icons/InstagramIcon';
 import FacebookIcon from '@/components/icons/FacebookIcon';
 import TiktokIcon from '@/components/icons/TiktokIcon';
 import YoutubeIcon from '@/components/icons/YoutubeIcon';
+//import { storeEncryptedSecretDON } from '@/utils/chainlink';
+import { getEthersSigner } from '@/utils/ethersUtil'
+import { config } from '@/config'
+
 
 export function TransferComponent() {
   const [platform, setPlatform] = useState('');
@@ -27,9 +31,12 @@ export function TransferComponent() {
   const [amount, setAmount] = useState('');
   const [assetType, setAssetType] = useState('');
 
-  const handleSend = () => {
+  const handleSend = async () => {
     // Logic to handle sending money
     console.log(`Sending ${amount} to ${username} on ${platform} using ${assetType}`);
+    const signer = getEthersSigner(config)
+    //await storeEncryptedSecretDON(signer);
+    
   };
 
   return (
@@ -110,10 +117,8 @@ export function TransferComponent() {
                 <SelectValue placeholder="Select asset type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="bitcoin">Bitcoin</SelectItem>
                 <SelectItem value="ethereum">Ethereum</SelectItem>
                 <SelectItem value="usdc">USDC</SelectItem>
-                <SelectItem value="dai">DAI</SelectItem>
               </SelectContent>
             </Select>
           </div>

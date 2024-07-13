@@ -20,22 +20,21 @@ const gatewayUrls = [
 const donId = "fun-arbitrum-sepolia-1"
 const slotIdNumber = 0;
 const routerAddress = "0x234a5fb5Bd614a7AA2FfAB244D603abFA0Ac5C5C"
-const secretAccessToken = { accessToken: "ACCESS_TOKEN_HERE" };
 const expirationTimeMinutes = 360;
 
 const provider = new ethers.providers.JsonRpcProvider("https://sepolia-rollup.arbitrum.io/rpc");
-const wallet = new ethers.Wallet(PRIVATE_KEY);
+const wallet = new ethers.Wallet(process.env.CHAINLINK_ACCESS_TOKEN);
 const signer = wallet.connect(provider);
 
 
-export async function storeEncryptedSecretDON() {
+export async function storeEncryptedSecretDON(accessToken) {
     const secretsManager = new SecretsManager({
         signer: signer,
         functionsRouterAddress: routerAddress,
         donId: donId,
     });
     await secretsManager.initialize();
-    const encryptedSecretsObj = await secretsManager.encryptSecrets(secretAccessToken);
+    const encryptedSecretsObj = await secretsManager.encryptSecrets({accessToken: accessToken});
     console.log(
         `Upload encrypted secret to gateways ${gatewayUrls}. slotId ${slotIdNumber}. Expiration in minutes: ${expirationTimeMinutes}`
     );

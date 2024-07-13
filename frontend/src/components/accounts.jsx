@@ -20,18 +20,102 @@ To read more about using these font, please visit the Next.js documentation:
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
-import GithubCard from "@/app/(main)/my-accounts/social-cards/GithubCard";
-import XCard from "./social-cards/XCard";
 
-export default function Accounts() {
+export function Accounts() {
   return (
     (<div className="flex flex-col min-h-screen">
       <main className="container mx-auto px-4 py-12 md:px-6 lg:py-16">
         <h1 className="text-3xl font-bold mb-8 text-center">Connect Your Accounts</h1>
         <div
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          <GithubCard/>
-          <XCard/>
+          <Card
+            className="bg-card text-card-foreground p-6 flex flex-col items-center justify-between">
+            <div className="flex items-center gap-4">
+              <TwitterIcon className="w-8 h-8 text-[#1DA1F2]" />
+              <div>
+                <h3 className="text-lg font-semibold">@twitterdev</h3>
+                <p className="text-muted-foreground text-sm">Twitter</p>
+              </div>
+            </div>
+            <Button variant="secondary">Connect</Button>
+          </Card>
+          <Card
+            className="bg-card text-card-foreground p-6 flex flex-col items-center justify-between">
+            <div className="flex items-center gap-4">
+              <FacebookIcon className="w-8 h-8 text-[#1877F2]" />
+              <div>
+                <h3 className="text-lg font-semibold">Facebook</h3>
+                <p className="text-muted-foreground text-sm">Facebook</p>
+              </div>
+            </div>
+            <Button variant="secondary">Connect</Button>
+          </Card>
+          <Card
+            className="bg-card text-card-foreground p-6 flex flex-col items-center justify-between">
+            <div className="flex items-center gap-4">
+              <InstagramIcon className="w-8 h-8 text-[#E1306C]" />
+              <div>
+                <h3 className="text-lg font-semibold">@instagram</h3>
+                <p className="text-muted-foreground text-sm">Instagram</p>
+              </div>
+            </div>
+            <Button variant="secondary">Connect</Button>
+          </Card>
+          <Card
+            className="bg-card text-card-foreground p-6 flex flex-col items-center justify-between">
+            <div className="flex items-center gap-4">
+              <LinkedinIcon className="w-8 h-8 text-[#0077B5]" />
+              <div>
+                <h3 className="text-lg font-semibold">LinkedIn</h3>
+                <p className="text-muted-foreground text-sm">LinkedIn</p>
+              </div>
+            </div>
+            <Button variant="secondary">Connect</Button>
+          </Card>
+          <Card
+            className="bg-card text-card-foreground p-6 flex flex-col items-center justify-between">
+            <div className="flex items-center gap-4">
+              <GitlabIcon className="w-8 h-8 text-[#333]" />
+              <div>
+                <h3 className="text-lg font-semibold">@github</h3>
+                <p className="text-muted-foreground text-sm">GitHub</p>
+              </div>
+            </div>
+            <Button variant="secondary">Connect</Button>
+          </Card>
+          <Card
+            className="bg-card text-card-foreground p-6 flex flex-col items-center justify-between">
+            <div className="flex items-center gap-4">
+              <DiscIcon className="w-8 h-8 text-[#5865F2]" />
+              <div>
+                <h3 className="text-lg font-semibold">Discord</h3>
+                <p className="text-muted-foreground text-sm">Discord</p>
+              </div>
+            </div>
+            <Button variant="secondary">Connect</Button>
+          </Card>
+          <Card
+            className="bg-card text-card-foreground p-6 flex flex-col items-center justify-between">
+            <div className="flex items-center gap-4">
+              <TwitchIcon className="w-8 h-8 text-[#9146FF]" />
+              <div>
+                <h3 className="text-lg font-semibold">@twitchdev</h3>
+                <p className="text-muted-foreground text-sm">Twitch</p>
+              </div>
+            </div>
+            <Button variant="secondary">Connect</Button>
+          </Card>
+          <Card
+            className="bg-card text-card-foreground p-6 flex flex-col items-center justify-between">
+            <div className="flex items-center gap-4">
+              <YoutubeIcon className="w-8 h-8 text-[#FF0000]" />
+              <div>
+                <h3 className="text-lg font-semibold">YouTube</h3>
+                <p className="text-muted-foreground text-sm">YouTube</p>
+              </div>
+            </div>
+            <Button variant="secondary">Connect</Button>
+          </Card>
         </div>
       </main>
       <footer className="bg-muted text-muted-foreground py-8">
