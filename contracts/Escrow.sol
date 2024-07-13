@@ -125,31 +125,12 @@ contract GitHubFunding is FunctionsClient {
     //     emit FundsClaimed(username, amount);
     // }
 
-    function initializeFunctionsRequest(
-        string memory test,
-        string memory _username,
-        address _caller
-    ) internal returns (bytes32) {
+    function initializeFunctionsRequest(string memory username, Platform platform, address caller) internal returns (bytes32) {
         FunctionsRequest.Request memory req;
-        string[] memory args = new string[](1);
-        args[0] = test;
-        req.initializeRequestForInlineJavaScript(source);
-        if (args.length > 0) req.setArgs(args);
-        // Send the request and store the request ID
-        bytes32 _requestID = _sendRequest(
-            req.encodeCBOR(),
-            subscriptionId,
-            gasLimit,
-            donID
-        );
-        RequestIdentity memory requestIdentity = RequestIdentity(
-            _caller,
-            _username
-        );
-        requestToAddress[_requestID] = requestIdentity;
-        //requestToAddress[_requestID] = RequestIdentity { payee: _caller, username: _username};
-
-        return _requestID;
+        req.initializeRequestForInlineJavaScript(source); // Assuming a valid source for external API
+        bytes32 requestId = _sendRequest(req.encodeCBOR(), subscriptionId, gasLimit, donID);
+        requestToAddress[requestId] = RequestIdentity(caller, username, platform);
+        return requestId;
     }
 
     // // Receive authentication result from GitHub / Twitter
@@ -206,6 +187,10 @@ contract GitHubFunding is FunctionsClient {
 
         emit FundsClaimed(encodePlatformUser(identity.username, identity.platform), ethAmount + usdcAmount);
         delete requestToAddress[requestId];
+    }
+
+    function encodePlatformUser(string memory username, Platform platform) private pure returns (string memory) {
+        return string(abi.encodePacked(platform == Platform.GitHub ? "GitHub:" : "Twitter:", username));
     }
 
 }
