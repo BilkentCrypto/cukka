@@ -40,8 +40,8 @@ export function TransferComponent() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-full bg-background">
-      <Card className="w-full max-w-md p-6">
+    <div className="flex flex-col items-center justify-center h-full">
+      <Card className="w-full max-w-md p-6 rounded-2xl">
         <CardHeader>
           <CardTitle>Send Money</CardTitle>
           <CardDescription>Enter the details to send money to a social media account.</CardDescription>
