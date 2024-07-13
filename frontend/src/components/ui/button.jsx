@@ -4,8 +4,22 @@ import { cva } from "class-variance-authority";
 
 import { cn } from "@/lib/utils"
 
-async function getUserData() {
-  const params = "?client_id=" + process.env.CLIENT_ID
+export async function getUserData(code) {
+  const params = "?client_id=" + process.env.NEXT_PUBLIC_CLIENT_ID + "&client_secret=" + process.env.NEXT_PUBLIC_CLIENT_SECRET + "&code=" + code;
+
+  await fetch("https://github.com/login/oauth/access_token" + params, {
+    method: "POST",
+    headers: {
+      "Accept": "application/json"
+    }
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      // Handle the access token data
+      console.log(data);
+    });
 }
 
 const buttonVariants = cva(
