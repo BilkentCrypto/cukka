@@ -13,7 +13,7 @@ contract GitHubFunding is FunctionsClient {
     uint64 public subscriptionId;
 
     address router = 0x234a5fb5Bd614a7AA2FfAB244D603abFA0Ac5C5C;
-    uint32 gasLimit = 400000;
+    uint32 gasLimit = 300000;
     bytes32 donID =
         0x66756e2d617262697472756d2d7365706f6c69612d3100000000000000000000;
 
@@ -36,19 +36,19 @@ contract GitHubFunding is FunctionsClient {
     }
 
     string public source =
-        "const accessToken = args[0]"
-        "const username = args[1]"
-        "const url = 'https://api.github.com/user'"
+        "const accessToken = args[0];"
+        "const username = args[1];"
+        "const url = 'https://api.github.com/user';"
         "const githubRequest = Functions.makeHttpRequest({"
-        "url: url,"
-        "method: 'GET',"
-        "headers: {'Authorization':  'Bearer ' + accessToken}"
-        "})"
-        "const githubResponse = await githubRequest"
+        "  url: url,"
+        "  method: 'GET',"
+        "  headers: {'Authorization':  'Bearer ' + accessToken}"
+        "});"
+        "const githubResponse = await githubRequest;"
         "if (githubResponse.error) {"
-        "console.error(githubResponse.error)"
-        "throw Error('Request failed')"
-        "}"
+        "  console.error(githubResponse.error);"
+        "  throw Error('Request failed');"
+        "};"
         "const result = (githubResponse.data.login == username) ? 1 : 0;"
         "return Functions.encodeUint256(result);";
 
@@ -180,6 +180,11 @@ contract GitHubFunding is FunctionsClient {
             encodePlatformUser(identity.username, identity.platform),
             ethAmount + usdcAmount
         );
+    }
+
+    // Function to get the userKey for a given username and platform
+    function getUserKey(string calldata username, Platform platform) external pure returns (bytes32) {
+        return keccak256(abi.encodePacked(platform, username));
     }
 
     function encodePlatformUser(string memory username, Platform platform)
