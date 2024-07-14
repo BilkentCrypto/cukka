@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import PlatformButton from './PlatformButton';
 import TwitterIcon from '@/components/icons/TwitterIcon';
+import { FiGithub } from "react-icons/fi";
 // import InstagramIcon from '@/components/icons/InstagramIcon';
 // import FacebookIcon from '@/components/icons/FacebookIcon';
 // import TiktokIcon from '@/components/icons/TiktokIcon';
@@ -64,7 +65,7 @@ export function TransferComponent({ initialValues, onSubmit }) {
       address: contractAddresses.ESCROW_CONTRACT_ADDRESS,
       functionName: 'depositFunds',
       args: args,
-      value: assetType == "ethereum" ? parseEther(amount.toString()) : 0
+      value: assetType == "ethereum" ? parseEther(amount.toString()) : 0,
    })
     } catch(e) {
       console.log("hey");
@@ -96,7 +97,7 @@ export function TransferComponent({ initialValues, onSubmit }) {
                 platform="github"
                 selectedPlatform={platform}
                 setPlatform={setPlatform}
-                Icon={GithubIcon}
+                Icon={FiGithub}
                 label="Github"
               />
               <PlatformButton
