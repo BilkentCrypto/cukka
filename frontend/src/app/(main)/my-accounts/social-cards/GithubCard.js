@@ -9,12 +9,40 @@ import { FiGithub } from "react-icons/fi";
 import { useAccount, useReadContract, useWriteContract } from 'wagmi';
 import escrowAbi from '@/utils/escrow_abi.json'
 import contractAddresses from '@/utils/contract_addresses.json'
+import { formatEther, parseEther } from 'viem'
 
 
 export default function GithubCard() {
   const [userData, setUserData] = useState();
   const githubCookie = getCookie("GH_token");
   const { writeContract, error, failureReason } = useWriteContract()
+
+  const args = [userData?.login, 0]
+  const result = useReadContract({
+    abi: escrowAbi,
+    address: contractAddresses.ESCROW_CONTRACT_ADDRESS,
+    functionName: 'getUserKey',
+    args: args
+  })
+  console.log(result.data)
+
+  const ethBalance = useReadContract({
+    abi: escrowAbi,
+    address: contractAddresses.ESCROW_CONTRACT_ADDRESS,
+    functionName: 'ethBalances',
+    args: [result?.data]
+  })
+
+  const usdcBalance = useReadContract({
+    abi: escrowAbi,
+    address: contractAddresses.ESCROW_CONTRACT_ADDRESS,
+    functionName: 'usdcBalances',
+    args: [result?.data]
+  })
+  if (usdcBalance.data) console.log("usdc balance: ", formatEther(usdcBalance.data))
+
+  if (ethBalance.data) console.log("eth balance: ", formatEther(ethBalance.data))
+
 
   const getGithubUser = async () => {
     const res = await getGithubUserData();
@@ -84,6 +112,14 @@ export default function GithubCard() {
           </div>
         )}
       </div>
+      {
+        isConnected &&
+        <div>
+          {ethBalance.data && <h3>ETH Balance: {formatEther(ethBalance.data)}</h3>}
+          {usdcBalance.data && <h3>USDC Balance: {formatEther(usdcBalance.data)}</h3>}
+        </div>
+
+      }
       <Button onClick={isConnected ? disconnect : connect} variant={isConnected ? "destructive" : "secondary"}>
         {isConnected ? "Disconnect" : "Connect"}
       </Button>

@@ -35,7 +35,7 @@ export function TransferComponent({ initialValues, onSubmit }) {
   const [amount, setAmount] = useState('');
   const [assetType, setAssetType] = useState('');
 
-  const {address} = useAccount();
+  const { address } = useAccount();
   console.log(usdcAbi, contractAddresses.ESCROW_CONTRACT_ADDRESS)
   const { writeContract, error, failureReason } = useWriteContract()
   const approvalResult = useReadContract({
@@ -58,28 +58,28 @@ export function TransferComponent({ initialValues, onSubmit }) {
   console.log(error, failureReason)
   const handleSubmit = async () => {
     try {
-    const args = [username, platform == 'github' ? 0 : 1, parseEther(amount.toString()), assetType == "ethereum"]
+      const args = [username, platform == 'github' ? 0 : 1, parseEther(amount.toString()), assetType == "ethereum"]
 
-    await writeContract({ 
-      abi: escrowAbi,
-      address: contractAddresses.ESCROW_CONTRACT_ADDRESS,
-      functionName: 'depositFunds',
-      args: args,
-      value: assetType == "ethereum" ? parseEther(amount.toString()) : 0,
-   })
-    } catch(e) {
+      await writeContract({
+        abi: escrowAbi,
+        address: contractAddresses.ESCROW_CONTRACT_ADDRESS,
+        functionName: 'depositFunds',
+        args: args,
+        value: assetType == "ethereum" ? parseEther(amount.toString()) : 0,
+      })
+    } catch (e) {
       console.log("hey");
       console.log(e)
     }
   };
 
   const handleApprove = async () => {
-    await writeContract({ 
+    await writeContract({
       abi: usdcAbi,
       address: contractAddresses.USDC_CONTRACT_ADDRESS,
       functionName: 'approve',
       args: [contractAddresses.ESCROW_CONTRACT_ADDRESS, "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"],
-   })
+    })
   };
 
   return (
@@ -176,12 +176,12 @@ export function TransferComponent({ initialValues, onSubmit }) {
           </div>
         </CardContent>
         <CardFooter>
-          {!isApproved && assetType == 'usdc' ? 
-           <Button className="w-full" onClick={handleApprove} disabled={!(address && platform && username && amount && assetType)}>Approve</Button>
-          : 
-          <Button className="w-full" onClick={handleSubmit} disabled={!(address && platform && username && amount && assetType)}>{address ? "Send" : "Wallet Not Connected"}</Button>
+          {!isApproved && assetType == 'usdc' ?
+            <Button className="w-full" onClick={handleApprove} disabled={!(address && platform && username && amount && assetType)}>Approve</Button>
+            :
+            <Button className="w-full" onClick={handleSubmit} disabled={!(address && platform && username && amount && assetType)}>{address ? "Send" : "Wallet Not Connected"}</Button>
           }
-         
+
         </CardFooter>
       </Card>
     </div>
