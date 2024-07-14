@@ -1,18 +1,19 @@
 'use client';
 import Link from 'next/link';
+import Image from 'next/image'; // Import Image from next/image
 import '../animation.css';
+import logo from '../../public/images/logo.svg'; // Adjust the path to your SVG file
+
 export function Welcome() {
   return (
     <section className="w-full py-20 md:py-32">
       <div className="container px-4 md:px-6">
         <div className="grid gap-8 md:grid-cols-1 md:gap-12 items-center">
           <div className="space-y-4 animate-fade-in">
-            <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl animate-fade-in-up">
-              Welcome to Cukka
-            </h1>
+            {/* Replace the string with the SVG image */}
+            <Image src={logo} alt="Cukka Logo" width={300} height={100} className="animate-fade-in-up" />
             <p className="text-gray-900 text-muted-foreground md:text-xl animate-fade-in-up delay-100">
-              Cukka is a unique way of sending money to social media accounts (X and Github)
-               without having to ask the users for their crypto addresses.
+            send money to social platform members. one click, no need for address.
             </p>
             <Link
               href="#about-us"
