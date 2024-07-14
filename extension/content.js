@@ -36,7 +36,7 @@ if (targetUrls.some(url => currentUrl.startsWith(url))) {
       });
       button.onclick = () => {
         // Navigate to the specified URL when the button is clicked
-        window.location.href = `http://localhost:3000/transfer?username=${nicknameElement.textContent.trim()}&platform=github`;
+        window.location.href = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/transfer?username=${nicknameElement.textContent.trim()}&platform=github`;
       };
 
 

@@ -77,7 +77,7 @@ export const getGithubUserData = async () => {
 export async function getTwitterOauthUrl() {
   const rootUrl = "https://twitter.com/i/oauth2/authorize";
   const options = {
-    redirect_uri: "http://www.localhost:3000/token/twitter", // client url cannot be http://localhost:3000/ or http://127.0.0.1:3000/
+    redirect_uri: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/token/twitter`, // client url cannot be http://localhost:3000/ or http://127.0.0.1:3000/
     client_id: process.env.NEXT_PUBLIC_TWITTER_ID,
     state: "state",
     response_type: "code",
@@ -102,7 +102,7 @@ export async function getTwitterOAuthToken(code) {
     client_id: TWITTER_OAUTH_CLIENT_ID,
     // based on code_challenge
     code_verifier: "8KxxO-RPl0bLSxX5AWwgdiFbMnry_VOKzFeIlVA7NoA",
-    redirect_uri: `http://www.localhost:3000/token/twitter`,
+    redirect_uri: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/token/twitter`,
     grant_type: "authorization_code",
   };
 
