@@ -6,10 +6,15 @@ import { getCookie, deleteCookie } from 'cookies-next';
 import { useEffect, useState } from "react";
 import { getGithubUserData } from "@/app/actions";
 import { FiGithub } from "react-icons/fi";
+import { useAccount, useReadContract, useWriteContract } from 'wagmi';
+import escrowAbi from '@/utils/escrow_abi.json'
+import contractAddresses from '@/utils/contract_addresses.json'
+
 
 export default function GithubCard() {
   const [userData, setUserData] = useState();
   const githubCookie = getCookie("GH_token");
+  const { writeContract, error, failureReason } = useWriteContract()
 
   const getGithubUser = async () => {
     const res = await getGithubUserData();
@@ -31,9 +36,41 @@ export default function GithubCard() {
     setUserData(null);
   }
 
+  const getHostedSecretVersion = async () => {
+    console.log(githubCookie)
+    const res = await fetch("https://course-wizard.com:8011/store/github", {
+      method: "POST",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        token: githubCookie
+      })
+    });
+    const response = await res.json()
+    return response.version
+  }
+
+  const handleClaim = async () => {
+    const version = await getHostedSecretVersion();
+    console.log("version", version)
+    const userData = await getGithubUserData();
+    const username = userData.login;
+    try {
+      const args = [username, version, 0]
+
+      await writeContract({
+        abi: escrowAbi,
+        address: contractAddresses.ESCROW_CONTRACT_ADDRESS,
+        functionName: 'sendClaimRequest',
+        args: args
+      })
+    } catch (e) {
+      console.log("hey");
+      console.log(e)
+    }
+  };
   const isConnected = userData ? true : false;
   return (
-    <Card className="bg-card text-card-foreground p-6 gap-y-2 flex flex-col items-center justify-between h-36">
+    <Card className="bg-card text-card-foreground p-6 gap-y-2 flex flex-col items-center justify-between h-42">
       <div className="flex items-center gap-4">
         <FiGithub className="w-8 h-8 text-[#333]" />
         {userData ? (
@@ -50,6 +87,14 @@ export default function GithubCard() {
       <Button onClick={isConnected ? disconnect : connect} variant={isConnected ? "destructive" : "secondary"}>
         {isConnected ? "Disconnect" : "Connect"}
       </Button>
+      {
+        isConnected && <Button onClick={handleClaim} variant="secondary">
+          {isConnected ? "Claim Cukka" : "No Cukka"}
+        </Button>
+      }
+
     </Card>
   );
 }
+
+

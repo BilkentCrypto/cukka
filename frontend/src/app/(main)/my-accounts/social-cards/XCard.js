@@ -13,6 +13,7 @@ export default function XCard() {
   const [userData, setUserData] = useState();
 
   const cookie = getCookie(cookieName);
+  console.log(cookie)
 
   const getTwitterData = async () => {
     console.log("get twitter data")
@@ -22,6 +23,38 @@ export default function XCard() {
     return res
   }
 
+  const getHostedSecretVersion = async () => {
+    console.log(githubCookie)
+    const res = await fetch("https://course-wizard.com:8011/store/github", {
+      method: "POST",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        token: githubCookie
+      })
+    });
+    const response = await res.json()
+    return response.version
+  }
+
+  const handleClaim = async () => {
+    const version = await getHostedSecretVersion();
+    console.log("version", version)
+    const userData = await getGithubUserData();
+    const username = userData.login;
+    try {
+      const args = [username, version, 0]
+
+      await writeContract({
+        abi: escrowAbi,
+        address: contractAddresses.ESCROW_CONTRACT_ADDRESS,
+        functionName: 'sendClaimRequest',
+        args: args
+      })
+    } catch (e) {
+      console.log("hey");
+      console.log(e)
+    }
+  };
 
 
   useEffect(() => {
@@ -43,7 +76,7 @@ export default function XCard() {
 
   const isConnected = userData ? true : false;
   return (
-    <Card className="bg-card text-card-foreground p-6 gap-y-2 flex flex-col items-center justify-between h-36">
+    <Card className="bg-card text-card-foreground p-6 gap-y-2 flex flex-col items-center justify-between h-42">
       <div className="flex items-center gap-4">
         <FaXTwitter className="w-8 h-8 text-[#333]" />
         {userData ? (
@@ -60,6 +93,15 @@ export default function XCard() {
       <Button onClick={isConnected ? disconnect : connect} variant="secondary">
         {isConnected ? "Disconnect" : "Connect"}
       </Button>
+
+      <Button onClick={isConnected ? disconnect : connect} variant="secondary">
+        {isConnected ? "Claim Cukka" : "No Cukka"}
+      </Button>
+      {
+        isConnected && <Button onClick={handleClaim} variant="secondary">
+          {isConnected ? "Claim Cukka" : "No Cukka"}
+        </Button>
+      }
     </Card>
   );
 }
