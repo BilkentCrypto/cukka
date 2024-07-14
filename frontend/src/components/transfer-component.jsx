@@ -21,6 +21,11 @@ import TwitterIcon from '@/components/icons/TwitterIcon';
 // import TiktokIcon from '@/components/icons/TiktokIcon';
 // import YoutubeIcon from '@/components/icons/YoutubeIcon';
 import GithubIcon from '@/components/icons/GithubIcon';
+import { useAccount, useReadContract, useWriteContract } from 'wagmi';
+import contractAddresses from '@/utils/contract_addresses.json'
+import usdcAbi from '@/utils/erc20_abi.json'
+import escrowAbi from '@/utils/escrow_abi.json'
+import { parseEther } from 'viem'
 
 
 export function TransferComponent({ initialValues, onSubmit }) {
@@ -28,6 +33,18 @@ export function TransferComponent({ initialValues, onSubmit }) {
   const [username, setUsername] = useState('');
   const [amount, setAmount] = useState('');
   const [assetType, setAssetType] = useState('');
+
+  const {address} = useAccount();
+  console.log(usdcAbi, contractAddresses.ESCROW_CONTRACT_ADDRESS)
+  const { writeContract, error, failureReason } = useWriteContract()
+  const approvalResult = useReadContract({
+    abi: usdcAbi,
+    address: contractAddresses.USDC_CONTRACT_ADDRESS,
+    functionName: 'allowance',
+    args: [address, contractAddresses.ESCROW_CONTRACT_ADDRESS],
+  })
+
+  const isApproved = approvalResult.data > 0
 
   useEffect(() => {
     if (initialValues) {
@@ -37,9 +54,31 @@ export function TransferComponent({ initialValues, onSubmit }) {
       setAssetType(initialValues.assetType || '');
     }
   }, [initialValues]);
+  console.log(error, failureReason)
+  const handleSubmit = async () => {
+    try {
+    const args = [username, platform == 'github' ? 0 : 1, parseEther(amount.toString()), assetType == "ethereum"]
 
-  const handleSubmit = () => {
-    onSubmit({ platform, username, amount, assetType });
+    await writeContract({ 
+      abi: escrowAbi,
+      address: contractAddresses.ESCROW_CONTRACT_ADDRESS,
+      functionName: 'depositFunds',
+      args: args,
+      value: assetType == "ethereum" ? parseEther(amount.toString()) : 0
+   })
+    } catch(e) {
+      console.log("hey");
+      console.log(e)
+    }
+  };
+
+  const handleApprove = async () => {
+    await writeContract({ 
+      abi: usdcAbi,
+      address: contractAddresses.USDC_CONTRACT_ADDRESS,
+      functionName: 'approve',
+      args: [contractAddresses.ESCROW_CONTRACT_ADDRESS, "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"],
+   })
   };
 
   return (
@@ -136,7 +175,12 @@ export function TransferComponent({ initialValues, onSubmit }) {
           </div>
         </CardContent>
         <CardFooter>
-          <Button className="w-full" onClick={handleSubmit}>Send</Button>
+          {!isApproved && assetType == 'usdc' ? 
+           <Button className="w-full" onClick={handleApprove} disabled={!(address && platform && username && amount && assetType)}>Approve</Button>
+          : 
+          <Button className="w-full" onClick={handleSubmit} disabled={!(address && platform && username && amount && assetType)}>{address ? "Send" : "Wallet Not Connected"}</Button>
+          }
+         
         </CardFooter>
       </Card>
     </div>
