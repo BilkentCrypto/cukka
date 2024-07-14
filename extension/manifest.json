@@ -1,0 +1,38 @@
+{
+	"name": "Cukka",
+	"description": "Transfer money to anyone easily!",
+	"version": "1.0",
+	"manifest_version": 3,
+	"permissions": [
+		"contextMenus",
+		"notifications",
+		"storage"
+	],
+	"background": {
+		"service_worker": "background.js"
+	},
+	"content_scripts": [
+		{
+			"matches": [
+				"https://x.com/*",
+				"https://twitter.com/*",
+				"https://github.com/*"
+			],
+			"js": [
+				"content.js"
+			],
+			"run_at": "document_end"
+		}
+	],
+	"action": {
+		"default_popup": "popup.html",
+		"default_icon": {
+			"48": "/assets/icons/48.png",
+			"128": "/assets/icons/128.png"
+		}
+	},
+	"icons": {
+		"48": "/assets/icons/48.png",
+		"128": "/assets/icons/128.png"
+	}
+}
