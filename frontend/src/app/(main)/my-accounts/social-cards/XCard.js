@@ -81,7 +81,7 @@ export default function XCard() {
         <FaXTwitter className="w-8 h-8 text-[#333]" />
         {userData ? (
           <div>
-            <h3 className="text-lg font-semibold">@{userData.login}</h3>
+            <h3 className="text-lg font-semibold">@{userData.username}</h3>
             <p className="text-muted-foreground text-sm">X (Formerly Twitter)</p>
           </div>
         ) : (

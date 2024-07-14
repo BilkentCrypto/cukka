@@ -36,7 +36,7 @@ if (targetUrls.some(url => currentUrl.startsWith(url))) {
       });
       button.onclick = () => {
         // Navigate to the specified URL when the button is clicked
-        window.location.href = `${process.env.NEXT_PUBLIC_FRONTEND_URL}/transfer?username=${nicknameElement.textContent.trim()}&platform=github`;
+        window.location.href = `https://cukka.vercel.app/transfer?username=${nicknameElement.textContent.trim()}&platform=github`;
       };
 
 
@@ -75,7 +75,7 @@ if (targetUrls.some(url => currentUrl.startsWith(url))) {
 
       button.onclick = () => {
         // Use the username text in the navigation URL
-        window.location.href = `https://your-target-url.com?username=${encodeURIComponent(usernameText)}`;
+        window.location.href = `https://cukka.vercel.app/transfer?username=${encodeURIComponent(usernameText)}`;
       };
 
       // Insert the button after the username element
