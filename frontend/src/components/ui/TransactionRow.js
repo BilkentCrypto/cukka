@@ -3,11 +3,12 @@
 import React from "react";
 import { TableRow, TableCell } from "@/components/ui/table";
 import TwitterIcon from "@/components/icons/TwitterIcon";
-import GithubIcon from "@/components/icons/GithubIcon";
+import { FiGithub } from "react-icons/fi";
+
 
 const iconMap = {
   twitter: <TwitterIcon className="w-5 h-5 text-[#1DA1F2]" />,
-  github: <GithubIcon className="w-5 h-5 text-[#333]" />,
+  github: <FiGithub className="w-5 h-5 text-[#333]" />,
 };
 
 export default function TransactionRow({ transaction }) {
