@@ -6,20 +6,28 @@ import ConnectButton from "@/components/ui/ConnectButton";
 import { Button } from "@/components/ui/button";
 import { getCookie, deleteCookie } from 'cookies-next';
 import { useEffect, useState } from "react";
-import { getGithubUserData } from "@/app/actions";
+import { getGithubUserData, getTwitterOauthUrl } from "@/app/actions";
 import { FaXTwitter } from "react-icons/fa6";
-
 
 const cookieName = 'X_token'
 
 export default function XCard() {
 
   const [userData, setUserData] = useState();
+
   const cookie = getCookie(cookieName);
 
+  /*
   const getGithubUser = async () => {
     const res = await getGithubUserData();
     setUserData(res);
+
+  }
+  */
+
+  const getTwitterData = async () => {
+    const res = await getTwitterOauthUrl();
+    return res
 
   }
 
@@ -29,12 +37,13 @@ export default function XCard() {
     }
 
   }, []);
-  function connect() {
-    window.location.assign("https://github.com/login/oauth/authorize?client_id=" + process.env.NEXT_PUBLIC_CLIENT_ID)
+  async function connect() {
+    const url = await getTwitterOauthUrl();
+    window.location.assign(url)
   }
 
   function disconnect() {
-    deleteCookie('cookieName');
+    deleteCookie(cookieName);
     setUserData(null)
   }
 
