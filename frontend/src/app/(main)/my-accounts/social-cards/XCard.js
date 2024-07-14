@@ -93,10 +93,6 @@ export default function XCard() {
       <Button onClick={isConnected ? disconnect : connect} variant="secondary">
         {isConnected ? "Disconnect" : "Connect"}
       </Button>
-
-      <Button onClick={isConnected ? disconnect : connect} variant="secondary">
-        {isConnected ? "Claim Cukka" : "No Cukka"}
-      </Button>
       {
         isConnected && <Button onClick={handleClaim} variant="secondary">
           {isConnected ? "Claim Cukka" : "No Cukka"}

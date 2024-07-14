@@ -124,9 +124,9 @@ export default function GithubCard() {
         {isConnected ? "Disconnect" : "Connect"}
       </Button>
       {
-        isConnected && <Button onClick={handleClaim} variant="secondary">
+        isConnected && (<Button onClick={handleClaim} variant="secondary">
           {isConnected ? "Claim Cukka" : "No Cukka"}
-        </Button>
+        </Button>)
       }
 
     </Card>
