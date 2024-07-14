@@ -90,7 +90,7 @@ export default function XCard() {
           </div>
         )}
       </div>
-      <Button onClick={isConnected ? disconnect : connect} variant="secondary">
+      <Button onClick={isConnected ? disconnect : connect} variant={isConnected ? "destructive" : "secondary"}>
         {isConnected ? "Disconnect" : "Connect"}
       </Button>
       {
