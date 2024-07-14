@@ -23,6 +23,11 @@ const Sponsorships = () => {
           title="Circle"
           subTitle="It is important to have a fully backed digital dollar where users can receive their payments as a stablecoin without being affected by the volatility of ETH."
         />
+                <AboutCard
+          logo="/images/wallet-connect.png"
+          title="Wallet Connect"
+          subTitle="Cukka uses AppKit to provide seamless experience for Web3."
+        />
       </div>
     </div>
   );
