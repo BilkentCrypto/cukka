@@ -67,3 +67,26 @@
       @apply bg-background text-foreground;
     }
   }
+
+  /* Ensure these styles are added */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f4f4f4;
+}
+
+img, svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
