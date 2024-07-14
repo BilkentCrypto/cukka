@@ -42,22 +42,44 @@ contract GitHubFunding is FunctionsClient {
 
     string public source =
         "const username = args[0];"
-        "if (!secrets.accessToken) {"
-        "  throw Error('Missing access token');"
-        "};"
-        "const url = 'https://api.github.com/user';"
-        "const githubRequest = Functions.makeHttpRequest({"
-        "  url: url,"
-        "  method: 'GET',"
-        "  headers: {'Authorization': 'Bearer ' + secrets.accessToken}"
-        "});"
-        "const githubResponse = await githubRequest;"
-        "if (githubResponse.error) {"
-        "  console.error(githubResponse.error);"
-        "  throw Error('Request failed');"
-        "};"
-        "const result = (githubResponse.data.login == username) ? 1 : 0;"
-        "return Functions.encodeUint256(result);";
+"const platform = args[1];"
+"if (!secrets.accessToken) {"
+"  throw Error('Missing access token');"
+"};"
+"let result = false;"
+""
+"const twitterRequest = {"
+"  authenticateUser: () => Functions.makeHttpRequest({"
+"    url: url,"
+"    method: 'GET',"
+"    headers: {'Authorization':  'Bearer ' + args[2]}"
+"  }),"
+"};"
+""
+"if (platform == '0') {"
+"  const url = 'https://api.github.com/user';"
+"  const githubRequest = Functions.makeHttpRequest({"
+"    url: url,"
+"    method: 'GET',"
+"    headers: {'Authorization':  'Bearer ' + secrets.accessToken}"
+"  });"
+"  const githubResponse = await githubRequest;"
+"  result = (githubResponse.data.login == username) ? 1 : 0;"
+"} else if (platform == '1') {"
+"  const url = 'https://api.twitter.com/2/users/me';"
+"  const twitterRequest = Functions.makeHttpRequest({"
+"    url: url,"
+"    method: 'GET',"
+"    headers: {'Authorization':  'Bearer ' + secrets.accessToken}"
+"  });"
+"  const twitterResponse = await twitterRequest;"
+"  if (twitterResponse.error) {"
+"    console.log(twitterResponse);"
+"    throw Error('Request failed');"
+"  };"
+"  result = (twitterResponse.data.username == username) ? 1 : 0;"
+"};"
+"return Functions.encodeUint256(result);";
 
     event FundsDeposited(string indexed username, uint256 amount, bool isETH);
     event FundsClaimed(string indexed username, uint256 amount);
@@ -127,8 +149,9 @@ contract GitHubFunding is FunctionsClient {
         address caller
     ) internal returns (bytes32) {
         FunctionsRequest.Request memory req;
-        string[] memory args = new string[](1);
+        string[] memory args = new string[](2);
         args[0] = username;
+        args[1] = platform;
 
         if (args.length > 0) req.setArgs(args);
 
