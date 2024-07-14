@@ -64,7 +64,7 @@ export function AboutUs() {
               </div>
               <div className="flex flex-col items-center justify-center space-y-4 rounded-2xl bg-background p-8 shadow-md">
                 <Avatar className="h-24 w-24 rounded-full">
-                  <AvatarImage src="/images/chainlink.png" />
+                  <AvatarImage src="/images/alp.jpeg" />
                   <AvatarFallback>AO</AvatarFallback>
                 </Avatar>
                 <div className="space-y-1 text-center">
