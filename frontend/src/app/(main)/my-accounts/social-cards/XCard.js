@@ -11,28 +11,21 @@ const cookieName = 'X_token';
 
 export default function XCard() {
   const [userData, setUserData] = useState();
-<<<<<<< HEAD
 
-  const twitterCookie = getCookie("X_token");
-  console.log("twitter cookie: ", twitterCookie)
-=======
   const cookie = getCookie(cookieName);
->>>>>>> 66abf2b (Account UI)
 
   const getTwitterData = async () => {
     console.log("get twitter data")
     const res = await getTwitterUserData();
-<<<<<<< HEAD
     console.log("Twitter user data: ", res)
+    setUserData(res);
     return res
   }
-=======
-    setUserData(res);
-  };
->>>>>>> 66abf2b (Account UI)
+
+
 
   useEffect(() => {
-    if (twitterCookie) {
+    if (cookie) {
       console.log("selammm")
       getTwitterData();
     }
