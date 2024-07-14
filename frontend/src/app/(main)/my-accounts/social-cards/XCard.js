@@ -6,7 +6,7 @@ import ConnectButton from "@/components/ui/ConnectButton";
 import { Button } from "@/components/ui/button";
 import { getCookie, deleteCookie } from 'cookies-next';
 import { useEffect, useState } from "react";
-import { getGithubUserData, getTwitterOauthUrl } from "@/app/actions";
+import { getGithubUserData, getTwitterOauthUrl, getTwitterUserData } from "@/app/actions";
 import { FaXTwitter } from "react-icons/fa6";
 
 const cookieName = 'X_token'
@@ -26,14 +26,15 @@ export default function XCard() {
   */
 
   const getTwitterData = async () => {
-    const res = await getTwitterOauthUrl();
+    const res = await getTwitterUserData();
+    console.log(res)
     return res
 
   }
 
   useEffect(() => {
     if (cookie) {
-      getGithubUser();
+      getTwitterData();
     }
 
   }, []);

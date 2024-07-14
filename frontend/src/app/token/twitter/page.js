@@ -14,7 +14,7 @@ export default function TwitterCallback() {
     const params = useSearchParams()
     const code = params.get('code');
 
-    const fetchGithub = async () => {
+    const fetchTwitter = async () => {
         console.log("params: ", code)
         const res = await getTwitterOAuthToken(code);
         console.log("git response: ", res);
@@ -23,7 +23,7 @@ export default function TwitterCallback() {
     }
 
     useEffect(() => {
-        fetchGithub();
+        fetchTwitter();
     }, []);
 
     return (

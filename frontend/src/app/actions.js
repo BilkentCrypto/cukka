@@ -23,6 +23,36 @@ export const getGithubAccessToken = async (code) => {
 
 }
 
+export const getTwitterUserData = async () => {
+  const accessToken = cookies().get('X_token')
+  try {
+    // request GET https://api.twitter.com/2/users/me
+    const response = await fetch("https://api.twitter.com/2/users/me", {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        // put the access token in the Authorization Bearer token
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    // Check if the response is ok (status code 200-299)
+    if (!response.ok) {
+
+      throw new Error(`Error fetching user: ${response.statusText}`);
+    }
+
+    // Parse the JSON response
+    const data = await response.json();
+    console.log("TWITTER: ", data)
+    return data.data ?? null;
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+
+}
+
 export const getGithubUserData = async () => {
   const token = cookies().get('GH_token')
   console.log("github token: ", token)
@@ -45,7 +75,7 @@ export const getGithubUserData = async () => {
 export async function getTwitterOauthUrl() {
   const rootUrl = "https://twitter.com/i/oauth2/authorize";
   const options = {
-    redirect_uri: "http://www.localhost:3000", // client url cannot be http://localhost:3000/ or http://127.0.0.1:3000/
+    redirect_uri: "http://www.localhost:3000/token/twitter", // client url cannot be http://localhost:3000/ or http://127.0.0.1:3000/
     client_id: process.env.NEXT_PUBLIC_TWITTER_ID,
     state: "state",
     response_type: "code",
@@ -92,6 +122,7 @@ export async function getTwitterOAuthToken(code) {
     }
 
     const data = await response.json();
+    cookies().set('X_token', data.access_token);
     return data;
   } catch (err) {
     console.error(err);
