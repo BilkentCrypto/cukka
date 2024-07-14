@@ -9,11 +9,10 @@ const fontSans = FontSans({
 })
 
 import { cookieToInitialState } from 'wagmi'
-
-
-
 import { config } from '@/config'
 import Web3ModalProvider from '@/context'
+
+import { Toaster } from "@/components/ui/toaster"
 
 export const metadata = {
   title: 'Cukka',
@@ -31,6 +30,7 @@ export default function RootLayout({
           fontSans.variable
         )}>
         <Web3ModalProvider initialState={initialState}>{children}</Web3ModalProvider>
+        <Toaster />
       </body>
     </html>
   ) 

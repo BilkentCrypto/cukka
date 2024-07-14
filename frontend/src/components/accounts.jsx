@@ -1,3 +1,5 @@
+'use client';
+
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import TransactionTable from "@/components/ui/TransactionTable"; // Import the new component
@@ -5,7 +7,10 @@ import TwitterIcon from "@/components/icons/TwitterIcon";
 import GithubIcon from "@/components/icons/GithubIcon";
 import GitlabIcon from "@/components/icons/GitlabIcon";
 
+
 export function Accounts() {
+
+
   const transactions = [
     {
       user: "John Doe",
@@ -20,6 +25,8 @@ export function Accounts() {
       amount: "75.00",
     },
   ];
+
+
 
   return (
     <div className="flex flex-col min-h-screen">

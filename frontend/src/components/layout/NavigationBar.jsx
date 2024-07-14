@@ -13,7 +13,7 @@ export default async function NavigationBar() {
         <Image src="/logo.png" width={500} height={500} alt="Cukka" className="w-10 h-10" />
         <span className="text-lg font-semibold">Cukka</span>
       </Link>
-      <nav className="hidden md:flex items-center gap-4">
+      <nav className="flex items-center gap-4">
         <Link href="/transfer" className="text-sm font-medium hover:text-primary transition-colors">
           Transfer
         </Link>

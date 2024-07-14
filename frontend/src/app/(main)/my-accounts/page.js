@@ -13,8 +13,44 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
+import { useBlockNumber, useClient, usePublicClient, useWalletClient } from "wagmi";
+import { parseAbiItem } from 'viem'
+import { useEffect, useState } from "react";
+import { useAccount, useReadContract, useWriteContract } from 'wagmi';
+import contractAddresses from '@/utils/contract_addresses.json'
+import usdcAbi from '@/utils/erc20_abi.json'
+import escrowAbi from '@/utils/escrow_abi.json'
+import { parseEther } from 'viem'
+import { config } from "@/config";
+
 
 export default function Accounts() {
+
+  const client = usePublicClient(config);
+  const {data} = useBlockNumber();
+  console.log("client: ", client)
+
+  const [logs, setLogs] = useState([])
+
+  const setup = async () => {
+    const logs = await client.getLogs({  
+      
+      address: contractAddresses.ESCROW_CONTRACT_ADDRESS,
+      event: parseAbiItem('event FundsDeposited(string indexed, uint256, bool)'),
+      args: {
+        username: "egeaybars1233",
+      },
+      fromBlock: "earliest",
+      toBlock: "latest",
+    }, [data])
+    setLogs(logs);
+  }
+
+   useEffect( ()=> {
+setup();
+   }, [data, client] );
+console.log("logs: ", logs)
+  
   const transactions = [
     {
       user: "John Doe",

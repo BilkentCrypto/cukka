@@ -27,6 +27,7 @@ import contractAddresses from '@/utils/contract_addresses.json'
 import usdcAbi from '@/utils/erc20_abi.json'
 import escrowAbi from '@/utils/escrow_abi.json'
 import { parseEther } from 'viem'
+import { useToast } from "@/components/ui/use-toast"
 
 
 export function TransferComponent({ initialValues, onSubmit }) {
@@ -34,10 +35,10 @@ export function TransferComponent({ initialValues, onSubmit }) {
   const [username, setUsername] = useState('');
   const [amount, setAmount] = useState('');
   const [assetType, setAssetType] = useState('');
-
-  const { address } = useAccount();
+const {toast} = useToast()
+  const {address} = useAccount();
   console.log(usdcAbi, contractAddresses.ESCROW_CONTRACT_ADDRESS)
-  const { writeContract, error, failureReason } = useWriteContract()
+  const { writeContract, error, failureReason, status } = useWriteContract()
   const approvalResult = useReadContract({
     abi: usdcAbi,
     address: contractAddresses.USDC_CONTRACT_ADDRESS,
@@ -57,6 +58,7 @@ export function TransferComponent({ initialValues, onSubmit }) {
   }, [initialValues]);
   console.log(error, failureReason)
   const handleSubmit = async () => {
+
     try {
       const args = [username, platform == 'github' ? 0 : 1, parseEther(amount.toString()), assetType == "ethereum"]
 
@@ -73,6 +75,15 @@ export function TransferComponent({ initialValues, onSubmit }) {
     }
   };
 
+
+useEffect( () => {
+ if(status == 'success')
+  toast({
+    title: "Success!",
+    description: "You sent successfully!",
+  })
+}, [status] )
+
   const handleApprove = async () => {
     await writeContract({
       abi: usdcAbi,
@@ -81,6 +92,9 @@ export function TransferComponent({ initialValues, onSubmit }) {
       args: [contractAddresses.ESCROW_CONTRACT_ADDRESS, "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"],
     })
   };
+
+  console.log("status:", status)
+
 
   return (
     <div className="flex flex-col items-center justify-center h-full">
