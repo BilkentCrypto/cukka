@@ -24,7 +24,9 @@ export const getGithubAccessToken = async (code) => {
 }
 
 export const getTwitterUserData = async () => {
-  const accessToken = cookies().get('X_token')
+  console.log("asgassggsa")
+  const accessToken = cookies().get('X_token').value
+  console.log("acess token user data: ", accessToken)
   try {
     // request GET https://api.twitter.com/2/users/me
     const response = await fetch("https://api.twitter.com/2/users/me", {
@@ -32,7 +34,7 @@ export const getTwitterUserData = async () => {
       headers: {
         "Content-type": "application/json",
         // put the access token in the Authorization Bearer token
-        Authorization: `Bearer ${accessToken}`,
+        "Authorization": `Bearer ${accessToken}`,
       },
     });
 

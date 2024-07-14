@@ -17,7 +17,7 @@ export default function TwitterCallback() {
     const fetchTwitter = async () => {
         console.log("params: ", code)
         const res = await getTwitterOAuthToken(code);
-        console.log("git response: ", res);
+        console.log("twitter response: ", res);
         setResponse(res);
         router.replace('/my-accounts');
     }
