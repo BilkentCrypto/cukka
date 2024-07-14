@@ -16,10 +16,12 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import PlatformButton from './PlatformButton';
 import TwitterIcon from '@/components/icons/TwitterIcon';
-import InstagramIcon from '@/components/icons/InstagramIcon';
-import FacebookIcon from '@/components/icons/FacebookIcon';
-import TiktokIcon from '@/components/icons/TiktokIcon';
-import YoutubeIcon from '@/components/icons/YoutubeIcon';
+// import InstagramIcon from '@/components/icons/InstagramIcon';
+// import FacebookIcon from '@/components/icons/FacebookIcon';
+// import TiktokIcon from '@/components/icons/TiktokIcon';
+// import YoutubeIcon from '@/components/icons/YoutubeIcon';
+import GithubIcon from '@/components/icons/GithubIcon';
+
 
 export function TransferComponent({ initialValues, onSubmit }) {
   const [platform, setPlatform] = useState('');
@@ -52,13 +54,20 @@ export function TransferComponent({ initialValues, onSubmit }) {
             <Label>Platform</Label>
             <div className="grid grid-cols-5 gap-4">
               <PlatformButton
+                platform="github"
+                selectedPlatform={platform}
+                setPlatform={setPlatform}
+                Icon={GithubIcon}
+                label="Github"
+              />
+              <PlatformButton
                 platform="twitter"
                 selectedPlatform={platform}
                 setPlatform={setPlatform}
                 Icon={TwitterIcon}
                 label="Twitter"
               />
-              <PlatformButton
+              {/* <PlatformButton
                 platform="instagram"
                 selectedPlatform={platform}
                 setPlatform={setPlatform}
@@ -85,7 +94,7 @@ export function TransferComponent({ initialValues, onSubmit }) {
                 setPlatform={setPlatform}
                 Icon={YoutubeIcon}
                 label="YouTube"
-              />
+              />  */}
             </div>
           </div>
           <div className="grid gap-2">
@@ -118,10 +127,10 @@ export function TransferComponent({ initialValues, onSubmit }) {
                 <SelectValue placeholder="Select asset type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="bitcoin">Bitcoin</SelectItem>
                 <SelectItem value="ethereum">Ethereum</SelectItem>
                 <SelectItem value="usdc">USDC</SelectItem>
-                <SelectItem value="dai">DAI</SelectItem>
+                {/* <SelectItem value="dai">DAI</SelectItem>
+                <SelectItem value="bitcoin">Bitcoin</SelectItem> */}
               </SelectContent>
             </Select>
           </div>
