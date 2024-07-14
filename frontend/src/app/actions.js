@@ -1,6 +1,7 @@
 'use server';
 import { cookies } from 'next/headers'
 
+
 export const getGithubAccessToken = async (code) => {
   const params = "?client_id=" + process.env.NEXT_PUBLIC_CLIENT_ID + "&client_secret=" + process.env.NEXT_PUBLIC_CLIENT_SECRET + "&code=" + code;
   console.log(params);

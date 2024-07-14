@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-
+import '../animation.css';
 export function Welcome() {
   return (
     <section className="w-full py-20 md:py-32">
@@ -11,8 +11,8 @@ export function Welcome() {
               Welcome to Cukka
             </h1>
             <p className="text-gray-900 text-muted-foreground md:text-xl animate-fade-in-up delay-100">
-              Cukka is a revolutionary platform that empowers businesses to thrive in the digital age. Discover how we
-              can help you transform your operations and unlock new opportunities.
+              Cukka is a unique way of sending money to social media accounts (X and Github)
+               without having to ask the users for their crypto addresses.
             </p>
             <Link
               href="#about-us"
